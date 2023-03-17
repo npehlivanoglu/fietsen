@@ -1,12 +1,11 @@
 package be.vdab.fietsen.controllers;
 
 import be.vdab.fietsen.domain.Docent;
+import be.vdab.fietsen.dto.NieuweDocent;
 import be.vdab.fietsen.exceptions.DocentNietGevondenException;
 import be.vdab.fietsen.services.DocentService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,7 +18,7 @@ class DocentContoller {
         this.docentService = docentService;
     }
 
-    @GetMapping("aantal")
+    @GetMapping("/aantal")
     long findAantal() {
         return docentService.findAantal();
     }
@@ -29,14 +28,19 @@ class DocentContoller {
         return docentService.findAll();
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     Docent findById(@PathVariable long id) {
         return docentService.findById(id)
                 .orElseThrow(DocentNietGevondenException::new);
     }
 
-    @GetMapping("{id}/bestaat")
+    @GetMapping("/{id}/bestaat")
     boolean bestaatById(@PathVariable long id) {
         return docentService.existsById(id);
+    }
+
+    @PostMapping
+    long create(@RequestBody @Valid NieuweDocent nieuweDocent) {
+        return docentService.create(nieuweDocent);
     }
 }
