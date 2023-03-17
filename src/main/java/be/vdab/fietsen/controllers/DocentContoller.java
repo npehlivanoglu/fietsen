@@ -7,6 +7,7 @@ import be.vdab.fietsen.services.DocentService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.EmptyStackException;
 import java.util.List;
 
 @RestController
@@ -18,7 +19,7 @@ class DocentContoller {
         this.docentService = docentService;
     }
 
-    @GetMapping("/aantal")
+    @GetMapping("aantal")
     long findAantal() {
         return docentService.findAantal();
     }
@@ -28,13 +29,13 @@ class DocentContoller {
         return docentService.findAll();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("{id}")
     Docent findById(@PathVariable long id) {
         return docentService.findById(id)
                 .orElseThrow(DocentNietGevondenException::new);
     }
 
-    @GetMapping("/{id}/bestaat")
+    @GetMapping("{id}/bestaat")
     boolean bestaatById(@PathVariable long id) {
         return docentService.existsById(id);
     }
@@ -42,5 +43,13 @@ class DocentContoller {
     @PostMapping
     long create(@RequestBody @Valid NieuweDocent nieuweDocent) {
         return docentService.create(nieuweDocent);
+    }
+
+    @DeleteMapping("{id}")
+    void delete(@PathVariable long id) {
+        try {
+            docentService.delete(id);
+        } catch (EmptyStackException ignored) {
+        }
     }
 }
