@@ -6,6 +6,8 @@ import be.vdab.fietsen.exceptions.DocentNietGevondenException;
 import be.vdab.fietsen.exceptions.EenAndereGebruikerWijzijdeDeDocentException;
 import be.vdab.fietsen.services.DocentService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +19,7 @@ import java.util.List;
 @RequestMapping("docenten")
 class DocentContoller {
     private final DocentService docentService;
+    private record Opslag(@NotNull @Positive BigDecimal bedrag){};
 
     DocentContoller(DocentService docentService) {
         this.docentService = docentService;
@@ -96,4 +99,10 @@ class DocentContoller {
     List<AantalDocentenPerWedde> findAantalDocentenPerWedde() {
         return docentService.findAantalDocentenPerWedde();
     }
+
+    @PostMapping("weddeverhogingen")
+    void algemeneOpslag(@RequestBody @Valid Opslag opslag){
+        docentService.algemeneOpslag(opslag.bedrag());
+    }
+
 }

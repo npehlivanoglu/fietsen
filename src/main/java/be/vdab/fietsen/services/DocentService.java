@@ -87,4 +87,9 @@ public class DocentService {
     public BigDecimal findGrootsteWedde() {
         return docentRepository.findGrootsteWedde();
     }
+
+    @Transactional
+    public void algemeneOpslag(BigDecimal bedrag) {
+        docentRepository.algemeneOpslag(bedrag);
+    }
 }
