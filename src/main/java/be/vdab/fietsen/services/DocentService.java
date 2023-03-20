@@ -69,4 +69,8 @@ public class DocentService {
     public Optional<Docent> findByEmailAdres(String emailAdres) {
         return docentRepository.findByEmailAdres(emailAdres);
     }
+
+    public List<Docent> findMetGrootsteWedde(){
+        return docentRepository.findMetGrootsteWedde();
+    }
 }

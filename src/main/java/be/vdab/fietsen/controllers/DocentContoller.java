@@ -73,8 +73,13 @@ class DocentContoller {
     }
 
     @GetMapping(params = "emailAdres")
-    Docent findByEmailAdres(String emailAdres){
+    Docent findByEmailAdres(String emailAdres) {
         return docentService.findByEmailAdres(emailAdres)
                 .orElseThrow(DocentNietGevondenException::new);
+    }
+
+    @GetMapping("metGrootsteWedde")
+    List<Docent> findMetGrootsteWedde() {
+        return docentService.findMetGrootsteWedde();
     }
 }
