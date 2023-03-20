@@ -1,6 +1,7 @@
 package be.vdab.fietsen.controllers;
 
 import be.vdab.fietsen.domain.Docent;
+import be.vdab.fietsen.dto.GewijzigdeWedde;
 import be.vdab.fietsen.dto.NieuweDocent;
 import be.vdab.fietsen.exceptions.DocentNietGevondenException;
 import be.vdab.fietsen.services.DocentService;
@@ -51,5 +52,10 @@ class DocentContoller {
             docentService.delete(id);
         } catch (EmptyStackException ignored) {
         }
+    }
+
+    @PatchMapping("{id}/wedde")
+    void wijzigWedde(@PathVariable long id, @RequestBody @Valid GewijzigdeWedde gewijzigdeWedde) {
+        docentService.wijzigWedde(id, gewijzigdeWedde.wedde());
     }
 }

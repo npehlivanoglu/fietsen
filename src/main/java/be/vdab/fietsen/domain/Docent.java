@@ -48,4 +48,8 @@ public class Docent {
     public String getEmailAdres() {
         return emailAdres;
     }
+
+    public void setWedde(BigDecimal wedde) {
+        this.wedde = wedde;
+    }
 }
