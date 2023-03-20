@@ -4,8 +4,10 @@ import be.vdab.fietsen.domain.Docent;
 import be.vdab.fietsen.dto.GewijzigdeWedde;
 import be.vdab.fietsen.dto.NieuweDocent;
 import be.vdab.fietsen.exceptions.DocentNietGevondenException;
+import be.vdab.fietsen.exceptions.EenAndereGebruikerWijzijdeDeDocentException;
 import be.vdab.fietsen.services.DocentService;
 import jakarta.validation.Valid;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.EmptyStackException;
@@ -56,6 +58,11 @@ class DocentContoller {
 
     @PatchMapping("{id}/wedde")
     void wijzigWedde(@PathVariable long id, @RequestBody @Valid GewijzigdeWedde gewijzigdeWedde) {
-        docentService.wijzigWedde(id, gewijzigdeWedde.wedde());
+        try {
+            docentService.wijzigWedde(id, gewijzigdeWedde.wedde());
+        } catch (ObjectOptimisticLockingFailureException ex) {
+            throw new EenAndereGebruikerWijzijdeDeDocentException();
+        }
+
     }
 }
