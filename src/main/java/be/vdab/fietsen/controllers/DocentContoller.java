@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.EmptyStackException;
 import java.util.List;
 
@@ -64,5 +65,16 @@ class DocentContoller {
             throw new EenAndereGebruikerWijzijdeDeDocentException();
         }
 
+    }
+
+    @GetMapping(params = "wedde")
+    List<Docent> findByWedde(BigDecimal wedde) {
+        return docentService.findByWedde(wedde);
+    }
+
+    @GetMapping(params = "emailAdres")
+    Docent findByEmailAdres(String emailAdres){
+        return docentService.findByEmailAdres(emailAdres)
+                .orElseThrow(DocentNietGevondenException::new);
     }
 }
