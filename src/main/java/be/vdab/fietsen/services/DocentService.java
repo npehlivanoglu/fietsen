@@ -29,6 +29,7 @@ public class DocentService {
         return docentRepository.count();
     }
 
+
     public List<Docent> findAll() {
         return docentRepository.findAll(Sort.by("familienaam"));
     }
@@ -91,5 +92,23 @@ public class DocentService {
     @Transactional
     public void algemeneOpslag(BigDecimal bedrag) {
         docentRepository.algemeneOpslag(bedrag);
+    }
+
+    @Transactional
+    public void voegBijnaamToe(long id, String bijnaam) {
+        docentRepository.findById(id)
+                .orElseThrow(DocentNietGevondenException::new)
+                .voegBijnaamToe(bijnaam);
+    }
+
+    @Transactional
+    public void verwijderBijnaam(long id, String bijnaam) {
+        docentRepository.findById(id)
+                .orElseThrow(DocentNietGevondenException::new)
+                .verwijderBijnaam(bijnaam);
+    }
+
+    public List<Docent> findAllMetBijnamen(){
+        return docentRepository.findAllMetBijnamen();
     }
 }
