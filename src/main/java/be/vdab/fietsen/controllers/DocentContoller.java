@@ -26,8 +26,6 @@ class DocentContoller {
     private record Opslag(@NotNull @Positive BigDecimal bedrag) {
     }
 
-    ;
-
     private record NieuweBijnaam(@NotBlank String bijnaam) {
     }
 
@@ -40,6 +38,14 @@ class DocentContoller {
     private record DocentBeknoptMetBijnamen(long id, String voornaam, String familienaam, Set<String> bijnamen) {
         DocentBeknoptMetBijnamen(Docent docent) {
             this(docent.getId(), docent.getVoornaam(), docent.getFamilienaam(), docent.getBijnamen());
+        }
+    }
+
+    private record DocentBeknoptMetCampus(long id, String voornaam, String familienaam,
+                                          long campusId, String campusNam) {
+        DocentBeknoptMetCampus(Docent docent) {
+            this(docent.getId(), docent.getVoornaam(), docent.getFamilienaam(),
+                    docent.getCampus().getId(), docent.getCampus().getNaam());
         }
     }
 
@@ -58,8 +64,9 @@ class DocentContoller {
     }
 
     @GetMapping("{id}")
-    Docent findById(@PathVariable long id) {
+    DocentBeknoptMetBijnamen findById(@PathVariable long id) {
         return docentService.findById(id)
+                .map(DocentBeknoptMetBijnamen::new)
                 .orElseThrow(DocentNietGevondenException::new);
     }
 
@@ -99,8 +106,9 @@ class DocentContoller {
     }
 
     @GetMapping(params = "emailAdres")
-    Docent findByEmailAdres(String emailAdres) {
+    DocentBeknoptMetBijnamen findByEmailAdres(String emailAdres) {
         return docentService.findByEmailAdres(emailAdres)
+                .map(docent -> new DocentBeknoptMetBijnamen(docent))
                 .orElseThrow(DocentNietGevondenException::new);
     }
 
@@ -156,4 +164,17 @@ class DocentContoller {
                 .map(docent -> new DocentBeknoptMetBijnamen(docent));
     }
 
+    @GetMapping("{id}/campus")
+    CampusBeknopt findCampusVan(@PathVariable long id) {
+        return docentService.findById(id)
+                .map(docent -> new CampusBeknopt(docent.getCampus()))
+                .orElseThrow(DocentNietGevondenException::new);
+    }
+
+    @GetMapping("metCampussen")
+    Stream<DocentBeknoptMetCampus> findAllMetCampussen() {
+        return docentService.findAllMetCampussen()
+                .stream()
+                .map(docent -> new DocentBeknoptMetCampus(docent));
+    }
 }
