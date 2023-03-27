@@ -29,12 +29,6 @@ class DocentContoller {
     private record NieuweBijnaam(@NotBlank String bijnaam) {
     }
 
-    private record DocentBeknopt(long id, String voornaam, String familienaam) {
-        DocentBeknopt(Docent docent) {
-            this(docent.getId(), docent.getVoornaam(), docent.getFamilienaam());
-        }
-    }
-
     private record DocentBeknoptMetBijnamen(long id, String voornaam, String familienaam, Set<String> bijnamen) {
         DocentBeknoptMetBijnamen(Docent docent) {
             this(docent.getId(), docent.getVoornaam(), docent.getFamilienaam(), docent.getBijnamen());
@@ -161,7 +155,7 @@ class DocentContoller {
     Stream<DocentBeknoptMetBijnamen> findAllMetBijnamen() {
         return docentService.findAllMetBijnamen()
                 .stream()
-                .map(docent -> new DocentBeknoptMetBijnamen(docent));
+                .map(DocentBeknoptMetBijnamen::new);
     }
 
     @GetMapping("{id}/campus")
@@ -175,6 +169,6 @@ class DocentContoller {
     Stream<DocentBeknoptMetCampus> findAllMetCampussen() {
         return docentService.findAllMetCampussen()
                 .stream()
-                .map(docent -> new DocentBeknoptMetCampus(docent));
+                .map(DocentBeknoptMetCampus::new);
     }
 }

@@ -1,5 +1,6 @@
 package be.vdab.fietsen.repositories;
 
+import be.vdab.fietsen.domain.Campus;
 import be.vdab.fietsen.domain.Docent;
 import be.vdab.fietsen.dto.AantalDocentenPerWedde;
 import be.vdab.fietsen.dto.EnkelNaam;
@@ -61,4 +62,6 @@ public interface DocentRepository extends JpaRepository<Docent, Long> {
 
     @Query("select d from Docent d join fetch d.campus")
     List<Docent> findAllMetCampussen();
+
+    List<Docent> findByCampus_Id(long id);
 }

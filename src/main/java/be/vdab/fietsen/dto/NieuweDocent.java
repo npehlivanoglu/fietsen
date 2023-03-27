@@ -8,5 +8,5 @@ import java.math.BigDecimal;
 
 public record NieuweDocent(@NotBlank String voornaam, @NotBlank String familienaam,
                            @NotNull @PositiveOrZero BigDecimal wedde,
-                           @NotNull @Email String emailAdres, @NotNull Geslacht geslacht, @JsonProperty(required = true) @Positive long campusId) {
+                           @NotNull @Email String emailAdres, @NotNull Geslacht geslacht, @Positive long campusId) {
 }

@@ -53,6 +53,7 @@ public class DocentService {
                     .orElseThrow(CampusInDocentNietGevondenException::new);
             var docent = new Docent(nieuweDocent.voornaam(), nieuweDocent.familienaam(),
                     nieuweDocent.wedde(), nieuweDocent.emailAdres(), nieuweDocent.geslacht(), campus);
+            campus.voegDocentToe(docent);
             docentRepository.save(docent);
             return docent.getId();
         } catch (DataIntegrityViolationException ex) {
@@ -120,5 +121,8 @@ public class DocentService {
     }
     public List<Docent> findAllMetCampussen(){
         return docentRepository.findAllMetCampussen();
+    }
+    public List<Docent> findByCampus_Id(long id){
+        return docentRepository.findByCampus_Id(id);
     }
 }
